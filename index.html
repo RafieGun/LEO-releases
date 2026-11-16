@@ -2,79 +2,640 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>LEO, a voice assistant for Windows</title>
-<meta name="description" content="LEO is a voice and desktop assistant for Windows. Say Halo Leo, talk in Indonesian, and it answers out loud and does tasks on your laptop with your approval.">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LEO: voice and desktop assistant for Windows</title>
+<meta name="description" content="LEO is a free voice and desktop assistant for Windows 10 and 11. Say Halo Leo, talk in casual Indonesian, and it answers out loud and works on your laptop. Anything that deletes, sends or pays waits for your yes.">
+<link rel="canonical" href="https://rafiegun.github.io/LEO-releases/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://rafiegun.github.io/LEO-releases/">
+<meta property="og:title" content="LEO: voice and desktop assistant for Windows">
+<meta property="og:description" content="Say Halo Leo, then tell your laptop what to do. Free for Windows 10 and 11.">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#FBFBFA">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0B0B0C">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Crect x='8' y='8' width='240' height='240' rx='58' fill='%230B0B0C' stroke='%233A3A3D' stroke-width='5'/%3E%3Cg transform='translate(28 28) scale(8.333)' fill='none' stroke='%23F4F4F5' stroke-width='2.3' stroke-linecap='round'%3E%3Cpath d='M4 10v4M8 6v12M12 3v18M16 7v10M20 10v4'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preload" as="image" href="wave-dark.webp" media="(prefers-color-scheme: dark)">
+<link rel="preload" as="image" href="wave-light.webp" media="(prefers-color-scheme: light)">
+<script>
+  try { var t = localStorage.getItem("leo-theme"); if (t === "dark" || t === "light") document.documentElement.dataset.theme = t; } catch (e) {}
+  document.documentElement.classList.add("js");
+</script>
 <style>
-  :root { --bg:#0b0b0c; --text:#f4f4f5; --muted:#a1a1aa; --line:#27272a; --btn-bg:#f4f4f5; --btn-text:#0b0b0c; }
-  @media (prefers-color-scheme: light) {
-    :root { --bg:#fbfbfa; --text:#18181b; --muted:#52525b; --line:#e4e4e7; --btn-bg:#18181b; --btn-text:#fbfbfa; }
-  }
-  * { box-sizing:border-box; }
-  body { margin:0; background:var(--bg); color:var(--text); font:16px/1.65 "Segoe UI Variable","Segoe UI",system-ui,sans-serif; }
-  main { max-width:760px; margin:0 auto; padding:64px 20px 80px; }
-  h1 { font-size:44px; line-height:1.1; letter-spacing:-.025em; margin:0 0 12px; }
-  h2 { font-size:20px; margin:44px 0 10px; }
-  .lead { font-size:19px; color:var(--muted); margin:0 0 28px; max-width:600px; }
-  .muted { color:var(--muted); }
-  .btn { display:inline-block; background:var(--btn-bg); color:var(--btn-text); text-decoration:none; font-weight:600;
-         padding:12px 20px; border-radius:12px; }
-  .btn:focus-visible, a:focus-visible { outline:2px solid var(--text); outline-offset:3px; }
-  a { color:var(--text); }
-  .note { font-size:14px; color:var(--muted); margin-top:12px; }
-  ul { padding-left:20px; }
-  li { margin:6px 0; }
-  .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(290px, 1fr)); gap:12px; margin-top:8px; }
-  .card { border:1px solid var(--line); border-radius:14px; padding:14px 16px; }
-  .card strong { display:block; margin-bottom:2px; }
-  .card span { color:var(--muted); font-size:14.5px; }
-  footer { margin-top:56px; padding-top:18px; border-top:1px solid var(--line); font-size:14px; color:var(--muted); }
-  footer a { color:var(--muted); }
+/* Tokens: the same values as leo/ui/theme/tokens.css (DESIGN.md), so the site and the app look like one product. */
+:root{color-scheme:light;
+  --bg:#FBFBFA;--sidebar:#F4F4F2;--surface:#FFFFFF;--raised:#F1F1EF;--hover:#E9E9E6;--border:#E4E4E1;--border-strong:#C9C9C5;
+  --text:#141414;--text-2:#55555A;--text-3:#6B6B6F;--primary:#141414;--on-primary:#FFFFFF;--focus:#404040;
+  --danger:#B42318;--attention:#8A5A00;--float:0 8px 24px rgba(20,20,20,.10);--wave:url(wave-light.webp);--wave-o:.9;
+  --ui:"Segoe UI Variable Text","Segoe UI",system-ui,sans-serif;--display:"Segoe UI Variable Display","Segoe UI",system-ui,sans-serif;
+  --mono:"Cascadia Mono",Consolas,ui-monospace,monospace;--ease:cubic-bezier(.2,.7,.2,1)}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){color-scheme:dark;
+  --bg:#0B0B0C;--sidebar:#0F0F10;--surface:#151516;--raised:#1B1B1D;--hover:#232325;--border:#262628;--border-strong:#3A3A3D;
+  --text:#F4F4F5;--text-2:#A8A8AD;--text-3:#85858B;--primary:#F4F4F5;--on-primary:#0B0B0C;--focus:#D4D4D8;
+  --danger:#F0857A;--attention:#E2B45C;--float:0 12px 32px rgba(0,0,0,.45);--wave:url(wave-dark.webp);--wave-o:1}}
+:root[data-theme=dark]{color-scheme:dark;
+  --bg:#0B0B0C;--sidebar:#0F0F10;--surface:#151516;--raised:#1B1B1D;--hover:#232325;--border:#262628;--border-strong:#3A3A3D;
+  --text:#F4F4F5;--text-2:#A8A8AD;--text-3:#85858B;--primary:#F4F4F5;--on-primary:#0B0B0C;--focus:#D4D4D8;
+  --danger:#F0857A;--attention:#E2B45C;--float:0 12px 32px rgba(0,0,0,.45);--wave:url(wave-dark.webp);--wave-o:1}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:24px;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 var(--ui);overflow-wrap:break-word;
+  padding:0 env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+h1,h2,h3,p,figure,blockquote,dl,dd,ul{margin:0}ul{padding:0;list-style:none}
+h1,h2,h3{font-family:var(--display);font-weight:650;letter-spacing:-.02em;line-height:1.12;text-wrap:balance}
+h2{font-size:clamp(1.9rem,3.4vw,3rem)}h3{font-size:1.12rem;letter-spacing:-.01em;line-height:1.3}
+p{color:var(--text-2);text-wrap:pretty}strong{color:var(--text);font-weight:600}
+a{color:inherit;text-underline-offset:3px;text-decoration-color:var(--border-strong)}a:hover{text-decoration-color:currentColor}
+code,.mono{font-family:var(--mono);font-size:.86em}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:4px}
+::selection{background:var(--hover);color:var(--text)}
+button,input{font:inherit;color:inherit}button{cursor:pointer}
+[hidden]{display:none!important}.js-only{display:none}.js .js-only{display:revert}
+.sr{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:absolute;left:16px;top:-80px;z-index:10;padding:10px 16px;border-radius:10px;background:var(--primary);color:var(--on-primary)}
+.skip:focus{top:12px}
+.wrap{width:min(100% - 40px,1180px);margin-inline:auto}
+.over{display:block;font:600 11px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--text-3);margin-bottom:14px}
+.lead{font-size:1.08rem;max-width:34rem}
+section{padding-block:clamp(72px,9vw,128px)}
+.rule{border-top:1px solid var(--border)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:46px;padding:11px 20px;border-radius:10px;
+  border:1px solid transparent;font-weight:600;font-size:.95rem;line-height:1.2;text-decoration:none;transition:opacity 120ms ease}
+.btn:hover{opacity:.85}.btn svg{width:17px;height:17px;flex:none}
+.btn-p{background:var(--primary);color:var(--on-primary)}
+.btn-s{background:var(--surface);border-color:var(--border-strong);color:var(--text)}
+.btn-sm{min-height:44px;padding:9px 14px;font-size:.86rem}
+.chip{display:inline-flex;align-items:center;gap:6px;min-height:26px;padding:3px 10px;border:1px solid var(--border);border-radius:999px;
+  font-size:.78rem;color:var(--text-2);background:var(--surface);white-space:nowrap}
+.chip svg{width:12px;height:12px}
+
+/* Header, laid over the hero wave */
+.top{position:absolute;inset:0 0 auto;z-index:3}
+.top .wrap{display:flex;align-items:center;gap:24px;min-height:76px}
+.brand{display:inline-flex;align-items:center;gap:10px;min-height:44px;font:650 1.3rem/1 var(--display);letter-spacing:-.03em;text-decoration:none}
+.brand svg{width:32px;height:32px}
+.nav{display:flex;gap:4px;margin-left:auto}
+.nav a{display:inline-flex;align-items:center;min-height:44px;padding:0 10px;color:var(--text-2);font-size:.88rem;text-decoration:none;border-radius:8px}
+.nav a:hover{color:var(--text)}
+.theme{display:none;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--border);border-radius:10px;background:transparent;color:var(--text-2)}
+.js .theme{display:inline-flex}.theme:hover{color:var(--text)}.theme svg{width:18px;height:18px}
+.theme .sun,[data-dark] .theme .moon{display:none}[data-dark] .theme .sun{display:block}
+
+/* Hero: copy on the left, a screen on the right with the island where it really sits; the wave is the wallpaper. */
+.hero{position:relative;isolation:isolate;overflow:hidden;padding:clamp(116px,11vw,150px) 0 clamp(64px,8vw,104px)}
+.hero::before{content:"";position:absolute;inset:0;z-index:-2;background:var(--wave) 70% 0/cover no-repeat;top:40px;opacity:var(--wave-o)}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(90deg,var(--bg) 0,color-mix(in srgb,var(--bg) 70%,transparent) 34%,transparent 62%),linear-gradient(transparent 72%,var(--bg))}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(40px,6vw,88px);align-items:center}
+.hero h1{font-size:clamp(2rem,3.4vw,3rem);letter-spacing:-.025em;line-height:1.1}
+.hero h1 span{color:var(--text-2)}
+.hero .lead{margin-top:20px;font-size:1.05rem;line-height:1.7;max-width:32rem}
+.cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.fine{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:18px;color:var(--text-3);font-size:.84rem}
+.fine a{color:var(--text-2)}
+.screen{margin:0;display:flex;flex-direction:column;gap:12px;min-width:0}
+.display{position:relative;aspect-ratio:16/9;display:flex;flex-direction:column;align-items:center;gap:14px;padding:20px 20px 0;
+  border:1px solid var(--border-strong);border-radius:14px;background:color-mix(in srgb,var(--bg) 25%,transparent);box-shadow:var(--float);overflow:hidden}
+.taskbar{margin:auto -20px 0;align-self:stretch;display:flex;align-items:center;justify-content:center;gap:8px;height:40px;
+  border-top:1px solid var(--border);background:color-mix(in srgb,var(--sidebar) 92%,transparent)}
+.taskbar i{width:22px;height:22px;border-radius:6px;background:var(--raised);border:1px solid var(--border)}
+.taskbar i.on{background:var(--hover);border-color:var(--border-strong)}
+.said{min-height:3.6em;text-align:center;max-width:26rem}
+.said p{display:table;margin:0 auto 4px;padding:2px 10px;border-radius:8px;font-size:.92rem;color:var(--text);
+  background:color-mix(in srgb,var(--bg) 70%,transparent)}
+.said p+p{color:var(--text-2)}
+.screen figcaption{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.where{font:500 11px/1.3 var(--mono);letter-spacing:.06em;color:var(--text-3);text-transform:uppercase}
+.demo-ctl{display:flex;gap:8px}
+.demo-ctl button{min-height:36px;padding:6px 12px;border:1px solid var(--border);border-radius:999px;background:var(--surface);color:var(--text-2);font-size:.8rem}
+.demo-ctl button:hover{color:var(--text)}
+.island{display:flex;align-items:center;gap:12px;min-width:220px;max-width:100%;min-height:54px;padding:12px 22px 12px 18px;border-radius:999px;
+  background:var(--surface);border:1px solid var(--border-strong);box-shadow:var(--float)}
+[data-dark] .island{background:var(--bg);border-color:var(--border)}
+.bars{position:relative;display:flex;align-items:center;gap:3px;height:24px;width:27px;flex:none;color:var(--text)}
+.bars i{display:block;width:3px;height:22px;border-radius:2px;background:currentColor;transform:scaleY(.18);transition:transform 240ms var(--ease)}
+.dot{position:absolute;inset:7px 9px;width:9px;height:9px;border-radius:50%;background:var(--text-2);opacity:0}
+.island b{font-weight:600;font-size:.95rem;min-width:84px}
+.island small{color:var(--text-3);font-size:.8rem;margin-left:auto;padding-left:12px}
+[data-state=listening] .bars i:nth-child(1){transform:scaleY(.4)}[data-state=listening] .bars i:nth-child(2){transform:scaleY(.8)}
+[data-state=listening] .bars i:nth-child(3){transform:scaleY(1)}[data-state=listening] .bars i:nth-child(4){transform:scaleY(.65)}
+[data-state=listening] .bars i:nth-child(5){transform:scaleY(.35)}
+[data-state=speaking] .bars{color:var(--text-2)}
+[data-state=speaking] .bars i:nth-child(odd){transform:scaleY(.5)}[data-state=speaking] .bars i:nth-child(even){transform:scaleY(.85)}
+[data-state=thinking] .bars i{opacity:0}[data-state=thinking] .dot{opacity:1}
+@keyframes lis{0%,100%{transform:scaleY(.2)}45%{transform:scaleY(.95)}70%{transform:scaleY(.5)}}
+@keyframes spk{0%,100%{transform:scaleY(.3)}45%{transform:scaleY(.8)}75%{transform:scaleY(.45)}}
+@keyframes brt{0%,100%{opacity:.35;transform:scale(.8)}50%{opacity:1;transform:scale(1)}}
+.playing[data-state=listening] .bars i{animation:lis 1s ease-in-out infinite}
+.playing[data-state=speaking] .bars i{animation:spk .85s ease-in-out infinite}
+.playing .bars i:nth-child(2){animation-delay:-.22s}.playing .bars i:nth-child(3){animation-delay:-.46s}
+.playing .bars i:nth-child(4){animation-delay:-.16s}.playing .bars i:nth-child(5){animation-delay:-.61s}
+.playing[data-state=thinking] .dot{animation:brt 1.8s ease-in-out infinite}
+
+/* Three ways: one big window, two smaller tiles */
+.ways{display:grid;grid-template-columns:1.35fr 1fr;grid-template-rows:auto auto;gap:16px;margin-top:48px}
+.tile{position:relative;display:flex;flex-direction:column;gap:18px;padding:22px;border:1px solid var(--border);border-radius:14px;background:var(--sidebar);min-width:0}
+.tile.big{grid-column:1;grid-row:1/span 2}.tile:not(.big){grid-column:2}
+.tile header{display:flex;align-items:baseline;gap:12px}.tile header span{font:500 .78rem var(--mono);color:var(--text-3)}
+.tile>p{font-size:.95rem;max-width:30rem}
+.win{display:grid;grid-template-columns:150px 1fr;grid-template-rows:34px 1fr;flex:1;min-height:330px;border:1px solid var(--border-strong);
+  border-radius:10px;overflow:hidden;background:var(--bg);font-size:.8rem}
+.win-bar{grid-column:1/-1;display:flex;align-items:center;gap:8px;padding:0 4px 0 12px;border-bottom:1px solid var(--border);background:var(--sidebar);color:var(--text-2)}
+.win-bar svg{width:14px;height:14px}.win-bar .ctl{margin-left:auto;display:flex}
+.win-bar .ctl i{width:34px;height:26px;display:grid;place-items:center;color:var(--text-3);font-style:normal;font-size:.8rem}
+.side{border-right:1px solid var(--border);background:var(--sidebar);padding:10px 8px;display:flex;flex-direction:column;gap:3px;min-width:0}
+.side .new{padding:7px 9px;border-radius:8px;background:var(--primary);color:var(--on-primary);font-weight:600;margin-bottom:8px}
+.side .g{font:600 9.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--text-3);margin:8px 9px 4px}
+.side .row{padding:6px 9px;border-radius:8px;color:var(--text-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.side .row.on{background:var(--raised);color:var(--text);font-weight:600}
+.chat{display:flex;flex-direction:column;gap:10px;padding:14px;min-width:0}
+.chat .chips{display:flex;gap:6px;flex-wrap:wrap}
+.u{align-self:flex-end;max-width:85%;padding:8px 12px;border-radius:16px 6px 16px 16px;background:var(--raised);color:var(--text)}
+.steps{display:flex;flex-direction:column;gap:3px;color:var(--text-3);font-size:.74rem}
+.steps span::before{content:"";display:inline-block;width:5px;height:5px;margin-right:7px;border-radius:50%;background:var(--text-3);vertical-align:2px}
+.l{display:flex;gap:8px;color:var(--text)}.l .badge{flex:none;width:20px;height:20px;border-radius:6px;background:var(--primary);color:var(--on-primary);display:grid;place-items:center}
+.l .badge svg{width:13px;height:13px}
+.composer{margin-top:auto;display:flex;align-items:center;gap:8px;padding:8px 8px 8px 12px;border:1px solid var(--border-strong);border-radius:14px;background:var(--surface);color:var(--text-3)}
+.composer i{margin-left:auto;width:26px;height:26px;border-radius:8px;background:var(--primary);display:grid;place-items:center;color:var(--on-primary);font-style:normal}
+.mini-island{align-self:flex-start;display:flex;align-items:center;gap:10px;padding:9px 16px 9px 13px;border-radius:999px;background:var(--surface);border:1px solid var(--border-strong)}
+[data-dark] .mini-island{background:var(--bg);border-color:var(--border)}
+.mini-island .bars{width:22px;height:18px;color:var(--text-2)}.mini-island .bars i{height:16px}
+.mini-island .bars i:nth-child(odd){transform:scaleY(.55)}.mini-island .bars i:nth-child(even){transform:scaleY(.9)}
+.convo{display:flex;flex-direction:column;gap:6px;font-size:.92rem}.convo p:first-child{color:var(--text)}
+.live{display:flex;align-items:center;gap:18px}
+.orb{flex:none;width:76px;height:76px;border-radius:50%;background:var(--raised);border:1px solid var(--border-strong);display:grid;place-items:center}
+.wave{display:flex;align-items:center;gap:3px;height:28px}
+.wave i{width:3px;border-radius:2px;background:var(--text-2)}
+.capt{display:flex;flex-direction:column;gap:4px;font-size:.88rem;min-width:0}.capt p:first-child{color:var(--text)}
+
+/* Quick commands */
+.quick{background:var(--sidebar);border-block:1px solid var(--border)}
+.split{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(40px,7vw,104px);align-items:start}
+.split h2{margin-bottom:20px}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+.log{display:flex;flex-direction:column;border-top:1px solid var(--border-strong)}
+.log li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 16px;padding:18px 0;border-bottom:1px solid var(--border)}
+.log q{color:var(--text);font-weight:500;quotes:"\201C" "\201D"}
+.log .res{grid-column:1;color:var(--text-2);font-size:.93rem}
+.log .chip{grid-row:1/span 2;grid-column:2;align-self:center}
+.covers{margin-top:26px;color:var(--text-3);font-size:.9rem}
+
+/* Work + approvals */
+.work{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 40px;margin-top:40px}
+.work li{display:flex;gap:12px;padding:16px 0;border-top:1px solid var(--border);color:var(--text)}
+.work li::before{content:"";flex:none;width:6px;height:6px;margin-top:.62em;border-radius:50%;background:var(--text-3)}
+.safe{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,6vw,80px);align-items:center;margin-top:clamp(64px,8vw,104px);
+  padding:clamp(24px,5vw,56px);border:1px solid var(--border);border-radius:14px;background:var(--surface)}
+.rules{margin-top:22px;display:flex;flex-direction:column;gap:12px}
+.rules li{padding-left:16px;border-left:2px solid var(--border-strong);color:var(--text-2);font-size:.95rem}
+.ask{display:flex;flex-direction:column;gap:14px}
+.tabs{display:inline-flex;gap:2px;padding:3px;border-radius:12px;background:var(--raised);align-self:flex-start;max-width:100%;overflow-x:auto}
+.tabs button{min-height:36px;padding:6px 12px;border:0;border-radius:9px;background:transparent;color:var(--text-2);font-size:.84rem;white-space:nowrap}
+.tabs button[aria-selected=true]{background:var(--surface);color:var(--text);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.card{padding:20px;border:1px solid var(--border-strong);border-radius:14px;background:var(--bg);box-shadow:var(--float)}
+.card .kick{display:flex;align-items:center;gap:8px;margin-bottom:12px;color:var(--attention);font:600 11px/1.3 var(--mono);letter-spacing:.05em;text-transform:uppercase}
+.card .kick svg{width:16px;height:16px;flex:none}
+.card[data-kind=money] .kick{color:var(--danger)}
+.card h3{font-size:1.02rem}
+.card pre{margin:12px 0 0;padding:10px 12px;border:1px solid var(--border);border-radius:6px;background:var(--raised);color:var(--text-2);
+  font:.78rem/1.5 var(--mono);white-space:pre-wrap;overflow-wrap:anywhere}
+.card .note{margin-top:12px;font-size:.88rem}
+.card .yakin{display:flex;flex-direction:column;gap:6px;margin-top:14px;font-size:.84rem;color:var(--text-2)}
+.card input{min-height:44px;padding:8px 12px;border:1px solid var(--border-strong);border-radius:10px;background:var(--surface)}
+.card .acts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}
+.card .acts button{min-height:44px;border-radius:10px;font-weight:600;font-size:.88rem}
+.card .acts .y{background:var(--primary);color:var(--on-primary);border:1px solid transparent}
+.card .acts .y:disabled{opacity:.4;cursor:not-allowed}
+.card .acts .n{background:var(--surface);border:1px solid var(--border-strong)}
+.card .out{margin-top:14px;font-size:.88rem;color:var(--text)}
+.timer{font-size:.82rem;color:var(--text-3)}
+
+/* Brains */
+.brains{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:44px}
+.brain{display:flex;flex-direction:column;gap:8px;padding:20px;border:1px solid var(--border);border-radius:14px;background:var(--surface)}
+.brain.free{border-color:var(--border-strong)}
+.brain h3{display:flex;align-items:center;gap:8px;font-size:1.2rem}
+.brain h3 .chip{min-height:22px;padding:1px 8px;font:600 .7rem/1.4 var(--ui);color:var(--text)}
+.brain p{font-size:.92rem}
+.note-under{margin-top:18px;color:var(--text-3);font-size:.9rem}
+
+/* Connections */
+.conn{background:var(--sidebar);border-block:1px solid var(--border)}
+.path{display:inline-block;margin-top:20px;padding:6px 10px;border:1px solid var(--border-strong);border-radius:6px;font:.8rem var(--mono);color:var(--text)}
+.svc{border-top:1px solid var(--border-strong)}
+.svc li{padding:20px 0;border-bottom:1px solid var(--border)}
+.svc h3{margin-bottom:6px}.svc p{font-size:.94rem}.svc q{quotes:none;display:block;margin-top:8px;color:var(--text);font-size:.92rem}
+.gdata{margin-top:28px;padding:22px;border:1px solid var(--border-strong);border-radius:10px;background:var(--surface)}
+.gdata h3{margin-bottom:10px}.gdata p{font-size:.93rem}.gdata p+p{margin-top:10px}.gdata a{display:inline-block;margin-top:12px;font-weight:600}
+
+/* Privacy map */
+.map{display:grid;grid-template-columns:minmax(0,1.5fr) 64px minmax(0,1fr);align-items:center;margin-top:44px}
+.box{padding:22px;border:1px solid var(--border-strong);border-radius:14px;background:var(--surface)}
+.box>span{display:block;margin-bottom:14px;font-weight:600}
+.box ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.box li{padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--bg);font-size:.88rem;color:var(--text-2)}
+.box li b{display:block;color:var(--text);font-weight:600;font-size:.92rem}
+.arrow{display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--text-3)}
+.arrow svg{width:40px;height:16px}
+.out-box{display:flex;flex-direction:column;gap:10px}
+.out-box div{padding:16px;border:1px solid var(--border);border-radius:14px}
+.out-box div:first-child{border-color:var(--border-strong);background:var(--surface)}
+.out-box div:last-child{border-style:dashed}
+.out-box b{display:block;font-weight:600}.out-box span{font-size:.88rem;color:var(--text-2)}
+.never{margin-top:24px;display:flex;flex-wrap:wrap;gap:8px}
+
+/* Install + closing wave */
+.install{position:relative;isolation:isolate;overflow:hidden;border-top:1px solid var(--border)}
+.install::before{content:"";position:absolute;inset:auto 0 0;height:min(70%,560px);z-index:-1;background:var(--wave) 40% 20%/cover no-repeat;
+  opacity:calc(var(--wave-o)*.55);transform:scaleX(-1)}
+.inst{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(20px,3vw,40px);margin-top:44px;counter-reset:s}
+.inst li{padding-top:16px;border-top:1px solid var(--border-strong)}
+.inst li::before{counter-increment:s;content:"0" counter(s);display:block;margin-bottom:14px;font:500 .78rem var(--mono);color:var(--text-3)}
+.inst h3{margin-bottom:8px}.inst p{font-size:.93rem}
+.smart{margin-top:36px;padding:18px 20px;border:1px solid var(--border);border-radius:10px;background:var(--surface);max-width:52rem}
+.smart p{font-size:.92rem}
+.upd{margin-top:18px;font-size:.92rem;max-width:52rem}
+.end{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px;margin-top:64px;padding-top:28px;border-top:1px solid var(--border)}
+.end p{font:600 clamp(1.25rem,2.2vw,1.75rem)/1.3 var(--display);letter-spacing:-.02em;color:var(--text)}
+footer{border-top:1px solid var(--border)}
+footer .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 32px;min-height:88px;padding-block:16px}
+footer nav{display:flex;flex-wrap:wrap;gap:0 8px}
+footer nav a{display:inline-flex;align-items:center;min-height:44px;padding:0 8px;color:var(--text-2);font-size:.88rem;text-decoration:none}
+footer nav a:hover{color:var(--text);text-decoration:underline}
+footer span{font-weight:600;font-size:.9rem}
+
+@media (max-width:980px){
+  .nav{display:none}.top .wrap{justify-content:space-between}.top .right{margin-left:auto}
+  .hero-grid{grid-template-columns:minmax(0,1fr)}.screen{max-width:600px}
+  .hero::before{top:auto;bottom:0;height:62%;background-position:60% 0}.hero::after{background:linear-gradient(transparent 70%,var(--bg))}.hero-copy{max-width:36rem}
+  .ways{grid-template-columns:1fr}.tile.big,.tile:not(.big){grid-column:auto;grid-row:auto}
+  .split,.safe{grid-template-columns:minmax(0,1fr)}
+  .brains{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .map{grid-template-columns:minmax(0,1fr)}.arrow{flex-direction:row;padding:14px 0}.arrow svg{transform:rotate(90deg)}
+}
+@media (max-width:640px){
+  .wrap{width:calc(100% - 32px)}
+  .hero{padding-top:104px}.display{aspect-ratio:4/3}
+  .island small{display:none}
+  .win{grid-template-columns:1fr}.side{display:none}
+  .work,.brains,.inst,.box ul{grid-template-columns:minmax(0,1fr)}
+  .cta .btn,.end .btn{width:100%}
+  .log li{grid-template-columns:minmax(0,1fr)}.log .chip{grid-row:auto;grid-column:1;justify-self:start}
+  .live{flex-direction:column;align-items:flex-start}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
-<main>
-<h1>LEO</h1>
-<p class="lead">A voice and desktop assistant for Windows. Say "Halo Leo", talk in Indonesian, and LEO answers out
-loud, opens apps, looks things up and does tasks on your laptop, asking you first before anything important.</p>
-<a class="btn" href="https://github.com/RafieGun/LEO-releases/releases/latest">Download for Windows</a>
-<p class="note">Windows 10 or 11, 64-bit. Free to install. The installer isn't code-signed yet, so Windows may say
-"Windows protected your PC": choose More info, then Run anyway.</p>
+<a class="skip" href="#main">Skip to content</a>
 
-<h2>What LEO does</h2>
-<div class="grid">
-  <div class="card"><strong>Talk or type</strong><span>Wake it by voice, use Live Talk for a real-time
-    conversation, or chat in the LEO Desktop window.</span></div>
-  <div class="card"><strong>Works on your laptop</strong><span>Opens apps and sites, controls volume, brightness and
-    media, reads and writes files in your projects.</span></div>
-  <div class="card"><strong>Your choice of AI</strong><span>Gemini (free with a Google AI Studio key), Claude,
-    Codex or DeepSeek, each with your own account.</span></div>
-  <div class="card"><strong>Asks before acting</strong><span>Deleting, sending, paying or reaching outside your
-    laptop needs your yes, on screen or by voice.</span></div>
-</div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="mark" viewBox="0 0 24 24"><path d="M4 10v4M8 6v12M12 3v18M16 7v10M20 10v4" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></symbol>
+  <symbol id="bolt" viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/></symbol>
+  <symbol id="warn" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 2.2 18a2 2 0 0 0 1.7 3h16.2a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/></g></symbol>
+  <symbol id="stop" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="m5.6 5.6 12.8 12.8"/></g></symbol>
+  <symbol id="down" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 11l5 5 5-5M4 17v3h16v-3"/></g></symbol>
+</svg>
 
-<h2>Optional connections</h2>
-<ul>
-  <li><strong>Google Calendar and Gmail</strong>: ask what's on your schedule, add an event after you approve it,
-      summarise your mail, and write a reply as a draft. LEO never sends email for you.</li>
-  <li><strong>Spotify</strong>: play, pause and skip music by voice.</li>
-</ul>
-<p class="muted">These stay off until you connect them in Settings &gt; Connections, and you can disconnect them at
-any time.</p>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#main" aria-label="LEO, back to top">
+      <svg viewBox="0 0 256 256" aria-hidden="true"><rect x="8" y="8" width="240" height="240" rx="58" fill="#0B0B0C" stroke="#3A3A3D" stroke-width="5"/><g transform="translate(28 28) scale(8.333)" fill="none" stroke="#F4F4F5" stroke-width="2.3" stroke-linecap="round"><path d="M4 10v4M8 6v12M12 3v18M16 7v10M20 10v4"/></g></svg>
+      LEO
+    </a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#ways">How it works</a><a href="#safety">Approvals</a><a href="#brains">AI brains</a><a href="#privacy">Privacy</a><a href="privacy-policy.html">Privacy policy</a>
+    </nav>
+    <div class="right" style="display:flex;gap:8px">
+      <button class="theme" type="button" data-theme-btn aria-label="Switch theme">
+        <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/></svg>
+        <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></g></svg>
+      </button>
+      <a class="btn btn-p btn-sm" href="https://github.com/RafieGun/LEO-releases/releases/latest">Download</a>
+    </div>
+  </div>
+</header>
 
-<h2>Privacy</h2>
-<p>LEO runs on your computer. Conversations, memory and settings stay in <code>%APPDATA%\LEO</code>; wake-word and
-speech recognition run locally. There is no LEO server that stores your data, and no ads or tracking. Read the full
-<a href="privacy-policy.html">privacy policy</a>.</p>
+<main id="main">
 
-<h2>Updates</h2>
-<p>LEO checks for new versions twice a day and installs them while you're not using it. Every update is signed, and
-a version that fails to start is rolled back automatically.</p>
+<section class="hero" aria-labelledby="hero-title">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+    <span class="over">Voice and desktop assistant for Windows</span>
+    <h1 id="hero-title">Say “Halo Leo”, <span>then tell your laptop what to do.</span></h1>
+    <p class="lead">LEO listens for its name, understands casual Indonesian, answers out loud and works on your Windows laptop. Anything that deletes, sends or pays waits for your yes.</p>
+    <div class="cta">
+      <a class="btn btn-p" href="https://github.com/RafieGun/LEO-releases/releases/latest"><svg aria-hidden="true"><use href="#down"/></svg>Download for Windows</a>
+      <a class="btn btn-s" href="#ways">See what it does</a>
+    </div>
+    <p class="fine"><span>Free</span><span>Windows 10 and 11, 64-bit</span><span>No admin rights needed</span><a href="privacy-policy.html">Privacy policy</a></p>
+    </div>
+    <figure class="screen" data-demo data-state="standby">
+      <div class="display">
+        <div class="island" role="img" aria-label="LEO's island" aria-describedby="demo-desc">
+      <span class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><span class="dot"></span></span>
+      <b data-label>Standby</b><small>Halo Leo</small>
+    </div>
+        <div class="said" aria-live="polite" data-said><p>Say “Halo Leo” to start.</p></div>
+        <div class="taskbar" aria-hidden="true"><i></i><i></i><i class="on"></i><i></i><i></i></div>
+      </div>
+      <figcaption>
+        <span class="where">The island, top centre of your screen</span>
+        <span class="demo-ctl js-only"><button type="button" data-play>Pause</button><button type="button" data-next>Next state</button></span>
+      </figcaption>
+      <p id="demo-desc" class="sr">A demo of LEO's island. It cycles through standby, listening, thinking and speaking while showing an example: you say “Halo Leo, buka YouTube”, LEO answers “Siap, fi.” and opens it. Nothing on your computer is affected.</p>
+    </figure>
+  </div>
+</section>
+
+<section id="ways" class="rule" aria-labelledby="ways-title">
+  <div class="wrap">
+    <span class="over">Three ways in</span>
+    <h2 id="ways-title">Speak, stay on a call, or type.</h2>
+    <div class="ways">
+      <article class="tile">
+        <header><h3>Voice</h3></header>
+        <p>Say “Halo Leo”, ask, and it answers out loud. No need to say the name again for a follow-up. Prefer another name, like “Jarvis”? Change it in Settings.</p>
+        <div class="mini-island" aria-hidden="true"><span class="bars"><i></i><i></i><i></i><i></i><i></i></span><b style="font-size:.88rem">Speaking</b></div>
+        <div class="convo"><p>“Halo Leo, jam berapa?”</p><p>“Jam dua lewat dua puluh, fi.”</p></div>
+      </article>
+      <article class="tile">
+        <header><h3>Live Talk</h3></header>
+        <p>A real-time voice call you can interrupt mid-sentence. Share your screen or camera when it needs to see what you see.</p>
+        <div class="live" aria-hidden="true">
+          <div class="orb"><div class="wave"><i style="height:8px"></i><i style="height:18px"></i><i style="height:26px"></i><i style="height:14px"></i><i style="height:20px"></i><i style="height:9px"></i></div></div>
+          <div class="capt"><p>“Leo, ini error apa ya?”</p><p>“Port 8080 udah kepake. Mau gue tutup prosesnya?”</p><span class="chip" style="align-self:flex-start;margin-top:4px">Screen shared</span></div>
+        </div>
+      </article>
+       <article class="tile big">
+        <header><h3>LEO Desktop</h3></header>
+        <p>A chat window for longer work: conversation history, projects, memory and file attachments. In a project folder LEO edits the code, runs the checks and reports the real result.</p>
+        <div class="win" role="img" aria-label="LEO Desktop window: a request to add a CSV export, the steps LEO took, and its answer with the test result">
+          <div class="win-bar"><svg aria-hidden="true"><use href="#mark"/></svg>LEO<span class="ctl" aria-hidden="true"><i>–</i><i>□</i><i>×</i></span></div>
+          <div class="side" aria-hidden="true">
+            <span class="new">New conversation</span>
+            <span class="g">Today</span><span class="row on">Export CSV di kasir</span><span class="row">Jadwal minggu ini</span>
+            <span class="g">This week</span><span class="row">Ringkas email kantor</span><span class="row">Cari laptop 10 juta</span>
+          </div>
+          <div class="chat" aria-hidden="true">
+            <div class="chips"><span class="chip">Claude</span><span class="chip">Project: kasir</span></div>
+            <p class="u">Tambahin tombol export CSV di halaman laporan, terus jalanin test-nya</p>
+            <div class="steps"><span>Baca 3 file</span><span>Edit laporan.py</span><span>Jalanin pytest</span></div>
+            <div class="l"><span class="badge"><svg><use href="#mark"/></svg></span><p style="color:var(--text)">Udah. Tombol Export CSV ada di halaman Laporan, 2 file berubah. Test: 14 lulus, 0 gagal.</p></div>
+            <div class="composer">Message LEO…<i>↑</i></div>
+          </div>
+        </div>
+      </article>
+   </div>
+  </div>
+</section>
+
+<section class="quick" aria-labelledby="quick-title">
+  <div class="wrap split">
+    <div>
+      <span class="over">Quick commands</span>
+      <h2 id="quick-title">The everyday stuff skips the AI.</h2>
+      <p class="lead">Short commands run straight on your laptop: about half a second, offline, and free. Anything longer or less clear goes to the AI you picked, which is told what LEO already did.</p>
+      <div class="facts"><span class="chip">~0.5 s</span><span class="chip">Offline</span><span class="chip">No AI cost</span></div>
+    </div>
+    <div>
+      <ul class="log" aria-label="Examples of quick commands">
+        <li><q>Leo, buka Spotify</q><span class="res">Spotify opens.</span><span class="chip"><svg aria-hidden="true"><use href="#bolt"/></svg>Quick, no AI</span></li>
+        <li><q>Volume 40</q><span class="res">Volume set to 40%.</span><span class="chip"><svg aria-hidden="true"><use href="#bolt"/></svg>Quick, no AI</span></li>
+        <li><q>Baterai berapa?</q><span class="res">LEO says the battery level and whether it's charging.</span><span class="chip"><svg aria-hidden="true"><use href="#bolt"/></svg>Quick, no AI</span></li>
+        <li><q>Kunci laptop</q><span class="res">The laptop locks.</span><span class="chip"><svg aria-hidden="true"><use href="#bolt"/></svg>Quick, no AI</span></li>
+      </ul>
+      <p class="covers">Also: open sites and folders, brightness, media keys, screen off, time and date.</p>
+    </div>
+  </div>
+</section>
+
+<section id="safety" aria-labelledby="work-title">
+  <div class="wrap">
+    <span class="over">On your laptop</span>
+    <h2 id="work-title">It does the work, not just the talking.</h2>
+    <ul class="work">
+      <li>Opens and drives its own Edge browser.</li>
+      <li>Clicks and types in desktop apps.</li>
+      <li>Reads and writes files in your projects.</li>
+      <li>Codes in a project folder and runs its tests.</li>
+      <li>Works on your second monitor, so your main screen stays yours.</li>
+      <li>Controls volume, brightness, media and the screen.</li>
+    </ul>
+
+    <div class="safe">
+      <div>
+        <span class="over">Approvals</span>
+        <h2 id="safety-title">Your laptop, your yes.</h2>
+        <p class="lead" style="margin-top:18px">Deleting, sending, paying, installing, or anything that leaves your laptop shows a card first. Answer by click or by voice.</p>
+        <ul class="rules">
+          <li><strong>No answer means no.</strong> After 45 seconds the card closes and nothing happens.</li>
+          <li><strong>Dangerous needs “yakin”.</strong> A plain “ya” isn't enough for things like wiping a drive.</li>
+          <li><strong>Money buttons stay yours.</strong> LEO never presses buy, pay, transfer or send by itself.</li>
+        </ul>
+      </div>
+      <div class="ask" data-ask>
+        <div class="tabs js-only" role="tablist" aria-label="Approval examples">
+          <button role="tab" type="button" aria-selected="true" data-kind="normal">Normal</button>
+          <button role="tab" type="button" aria-selected="false" data-kind="danger">Dangerous</button>
+          <button role="tab" type="button" aria-selected="false" data-kind="money">Buy button</button>
+        </div>
+        <div class="card" role="tabpanel" data-card data-kind="normal" aria-live="polite">
+          <div class="kick"><svg aria-hidden="true"><use href="#warn"/></svg><span data-kick>Needs your approval · demo</span></div>
+          <h3 data-title>Hapus 3 file di Downloads?</h3>
+          <pre data-cmd>Remove-Item ~\Downloads\*.tmp</pre>
+          <p class="note" data-note hidden></p>
+          <label class="yakin" data-yakin hidden>Type “yakin” to allow<input type="text" autocomplete="off" spellcheck="false" data-yakin-input></label>
+          <div class="acts js-only" data-acts><button type="button" class="y" data-yes>Izinkan</button><button type="button" class="n" data-no>Tolak</button></div>
+          <p class="out" data-out hidden></p>
+        </div>
+        <p class="timer">This is a demo. Nothing on your computer is touched.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="brains" class="rule" aria-labelledby="brains-title">
+  <div class="wrap">
+    <span class="over">AI brains</span>
+    <h2 id="brains-title">Pick the brain. Use your own account.</h2>
+    <p class="lead" style="margin-top:18px">LEO doesn't resell AI. You connect one of these with your own key or plan, and can switch from the island menu.</p>
+    <div class="brains">
+      <article class="brain free"><h3>Gemini <span class="chip">Free</span></h3><p>A Google AI Studio key. Takes about a minute to get.</p></article>
+      <article class="brain"><h3>Claude</h3><p>Sign in with a Claude Pro or Max plan.</p></article>
+      <article class="brain"><h3>Codex</h3><p>Sign in with a ChatGPT Plus or Pro plan.</p></article>
+      <article class="brain"><h3>DeepSeek</h3><p>A paid API key, pay as you go.</p></article>
+    </div>
+    <p class="note-under">No Claude or ChatGPT plan? Start with Gemini.</p>
+  </div>
+</section>
+
+<section id="connections" class="conn" aria-labelledby="conn-title">
+  <div class="wrap split">
+    <div>
+      <span class="over">Optional connections</span>
+      <h2 id="conn-title">Connect only what you need.</h2>
+      <p class="lead">Google Calendar, Gmail and Spotify stay off until you connect them, and you can disconnect them at any time.</p>
+      <span class="path">Settings › Connections</span>
+    </div>
+    <div>
+      <ul class="svc">
+        <li><h3>Google Calendar</h3><p>Reads your schedule when you ask. Adds an event only after you approve it on screen.</p><q>“Jadwal gue besok apa?”</q></li>
+        <li><h3>Gmail</h3><p>Reads and summarises your mail. Writes replies as drafts after you approve. LEO never sends email; you send the draft yourself from Gmail.</p></li>
+        <li><h3>Spotify</h3><p>Play, pause and skip by voice.</p></li>
+      </ul>
+      <div class="gdata">
+        <h3>How LEO uses Google data</h3>
+        <p>Calendar events and Gmail messages are read on your computer and shown to you to answer your request. They are passed only to the AI provider you chose for that conversation.</p>
+        <p>The developer does not store them, does not use them to train AI models and does not use them for advertising. Events are created only after your approval, and Gmail replies are saved as drafts, never sent.</p>
+        <a href="privacy-policy.html">Read the full privacy policy</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="privacy" aria-labelledby="privacy-title">
+  <div class="wrap">
+    <span class="over">Privacy</span>
+    <h2 id="privacy-title">It runs on your computer.</h2>
+    <p class="lead" style="margin-top:18px">There is no LEO server holding your conversations. Only what an answer needs leaves your laptop.</p>
+    <div class="map">
+      <div class="box">
+        <span>Stays on your laptop</span>
+        <ul>
+          <li><b>Wake word and speech-to-text</b>Recognised locally</li>
+          <li><b>Conversations and memory</b>In %APPDATA%\LEO</li>
+          <li><b>Keys and sign-ins</b>Windows Credential Manager</li>
+          <li><b>Settings and projects</b>Your folders, your files</li>
+        </ul>
+      </div>
+      <div class="arrow" aria-hidden="true"><svg viewBox="0 0 40 16"><path d="M0 8h36M30 2l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></div>
+      <div class="out-box">
+        <div><b>The AI you chose</b><span>Your message and what it needs to answer. In Live Talk, your voice too (Google Gemini Live).</span></div>
+        <div><b>Google or Spotify</b><span>Only if you connected them</span></div>
+      </div>
+    </div>
+    <div class="never"><span class="chip">No ads</span><span class="chip">No analytics</span><span class="chip">No tracking</span><span class="chip">Nothing sold</span></div>
+  </div>
+</section>
+
+<section id="install" class="install" aria-labelledby="install-title">
+  <div class="wrap">
+    <span class="over">Getting started</span>
+    <h2 id="install-title">Up and running in three steps.</h2>
+    <ol class="inst" style="padding:0;list-style:none">
+      <li><h3>Download and install</h3><p>Run LEO-Setup. No admin rights needed. About 1.5 GB on disk.</p></li>
+      <li><h3>Sign in with Google</h3><p>On first start. LEO also downloads its speech models, about 700 MB, once.</p></li>
+      <li><h3>Connect a brain</h3><p>Gemini, Claude, Codex or DeepSeek, with your own account or key.</p></li>
+    </ol>
+    <div class="smart"><p><strong>Windows SmartScreen.</strong> The installer isn't code-signed yet, so Windows may say “Windows protected your PC”. If you downloaded it from this page, choose <strong>More info</strong>, then <strong>Run anyway</strong>.</p></div>
+    <p class="upd"><strong>Updates.</strong> LEO checks twice a day and installs new versions while you're not using it. Every update is signed, and a version that fails to start is rolled back automatically.</p>
+    <div class="end">
+      <p>Ready to talk to your laptop?</p>
+      <a class="btn btn-p" href="https://github.com/RafieGun/LEO-releases/releases/latest"><svg aria-hidden="true"><use href="#down"/></svg>Download LEO for Windows</a>
+    </div>
+  </div>
+</section>
+
+</main>
 
 <footer>
-  LEO by Abhinawa · <a href="privacy-policy.html">Privacy policy</a> ·
-  <a href="mailto:leosupport.official@gmail.com">leosupport.official@gmail.com</a>
+  <div class="wrap">
+    <span>LEO by Abhinawa</span>
+    <nav aria-label="Footer"><a href="privacy-policy.html">Privacy policy</a><a href="mailto:leosupport.official@gmail.com">Contact</a><a href="https://github.com/RafieGun/LEO-releases/releases">All releases</a></nav>
+  </div>
 </footer>
-</main>
+
+<script>
+(function () {
+  "use strict";
+  var root = document.documentElement, dark = matchMedia("(prefers-color-scheme: dark)"), still = matchMedia("(prefers-reduced-motion: reduce)");
+  function on(m, f) { m.addEventListener ? m.addEventListener("change", f) : m.addListener(f); }
+
+  /* Theme: the [data-dark] flag drives the few rules tokens can't (island fill, toggle icon). */
+  function isDark() { return root.dataset.theme ? root.dataset.theme === "dark" : dark.matches; }
+  var themeBtn = document.querySelector("[data-theme-btn]");
+  function syncTheme() {
+    root.toggleAttribute("data-dark", isDark());
+    themeBtn.setAttribute("aria-label", "Switch to " + (isDark() ? "light" : "dark") + " theme");
+  }
+  themeBtn.addEventListener("click", function () {
+    root.dataset.theme = isDark() ? "light" : "dark";
+    try { localStorage.setItem("leo-theme", root.dataset.theme); } catch (e) {}
+    syncTheme();
+  });
+  on(dark, syncTheme); syncTheme();
+
+  /* Island demo */
+  var demo = document.querySelector("[data-demo]"), label = demo.querySelector("[data-label]"), said = demo.querySelector("[data-said]");
+  var playBtn = demo.querySelector("[data-play]"), nextBtn = demo.querySelector("[data-next]");
+  var steps = [
+    ["standby", "Standby", ["Say “Halo Leo” to start."]],
+    ["listening", "Listening", ["“Halo Leo, buka YouTube”"]],
+    ["thinking", "Thinking", ["“Halo Leo, buka YouTube”"]],
+    ["speaking", "Speaking", ["“Halo Leo, buka YouTube”", "“Siap, fi.” YouTube opens."]]
+  ];
+  var i = 0, playing = !still.matches, timer = null;
+  function render() {
+    var s = steps[i];
+    demo.dataset.state = s[0]; label.textContent = s[1];
+    said.innerHTML = "";
+    s[2].forEach(function (t) { var p = document.createElement("p"); p.textContent = t; said.appendChild(p); });
+  }
+  function sync() {
+    clearInterval(timer); timer = null;
+    var run = playing && !still.matches;
+    demo.classList.toggle("playing", run);
+    playBtn.textContent = run ? "Pause" : "Play";
+    playBtn.setAttribute("aria-label", (run ? "Pause" : "Play") + " the island demo");
+    if (run && !document.hidden) timer = setInterval(function () { i = (i + 1) % steps.length; render(); }, 2600);
+  }
+  playBtn.addEventListener("click", function () { playing = !playing; sync(); });
+  nextBtn.addEventListener("click", function () { playing = false; i = (i + 1) % steps.length; render(); sync(); });
+  on(still, function () { if (still.matches) playing = false; sync(); });
+  document.addEventListener("visibilitychange", sync);
+  render(); sync();
+
+  /* Approval card demo: never touches the computer, only this card. */
+  var ask = document.querySelector("[data-ask]"), card = ask.querySelector("[data-card]");
+  var q = function (s) { return card.querySelector(s); };
+  var yes = q("[data-yes]"), no = q("[data-no]"), out = q("[data-out]"), acts = q("[data-acts]"), yakin = q("[data-yakin]"), input = q("[data-yakin-input]");
+  var kinds = {
+    normal: { kick: "Needs your approval · demo", title: "Hapus 3 file di Downloads?", cmd: "Remove-Item ~\\Downloads\\*.tmp", note: "", yakin: false, buttons: true },
+    danger: { kick: "Dangerous · demo", title: "Format drive D:?", cmd: "Format-Volume -DriveLetter D", note: "This erases everything on D:. A plain “ya” is not enough.", yakin: true, buttons: true },
+    money: { kick: "Refused by LEO · demo", title: "Press “Buy” in the trading app?", cmd: "", note: "LEO never presses buy, pay, transfer or send buttons. It stops and tells you to press it yourself.", yakin: false, buttons: false }
+  };
+  function show(kind) {
+    var k = kinds[kind];
+    card.dataset.kind = kind;
+    q("[data-kick]").textContent = k.kick; q("[data-title]").textContent = k.title;
+    q("[data-cmd]").textContent = k.cmd; q("[data-cmd]").hidden = !k.cmd;
+    q("[data-note]").textContent = k.note; q("[data-note]").hidden = !k.note;
+    yakin.hidden = !k.yakin; input.value = "";
+    acts.hidden = !k.buttons; yes.disabled = k.yakin;
+    out.hidden = true; out.textContent = "";
+    q(".kick use").setAttribute("href", kind === "money" ? "#stop" : "#warn");
+    ask.querySelectorAll("[role=tab]").forEach(function (b) {
+      var on = b.dataset.kind === kind;
+      b.setAttribute("aria-selected", String(on)); b.tabIndex = on ? 0 : -1;
+    });
+  }
+  var tabList = [].slice.call(ask.querySelectorAll("[role=tab]"));
+  ask.querySelector("[role=tablist]").addEventListener("keydown", function (e) {
+    var at = tabList.indexOf(document.activeElement), to = -1;
+    if (e.key === "ArrowRight") to = (at + 1) % tabList.length;
+    else if (e.key === "ArrowLeft") to = (at - 1 + tabList.length) % tabList.length;
+    else if (e.key === "Home") to = 0;
+    else if (e.key === "End") to = tabList.length - 1;
+    if (at < 0 || to < 0) return;
+    e.preventDefault(); show(tabList[to].dataset.kind); tabList[to].focus();
+  });
+  function answer(text) { acts.hidden = true; yakin.hidden = true; out.hidden = false; out.textContent = text; }
+  ask.querySelectorAll("[role=tab]").forEach(function (b) { b.addEventListener("click", function () { show(b.dataset.kind); }); });
+  input.addEventListener("input", function () { yes.disabled = input.value.trim().toLowerCase() !== "yakin"; });
+  yes.addEventListener("click", function () { answer("Allowed. In real use LEO would run it now; in this demo nothing happens."); });
+  no.addEventListener("click", function () { answer("Declined. Nothing was run."); });
+  show("normal");
+})();
+</script>
 </body>
 </html>
