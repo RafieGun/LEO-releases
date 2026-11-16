@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LEO Privacy Policy</title>
+<style>
+  :root { --bg:#0b0b0c; --text:#f4f4f5; --muted:#a1a1aa; --line:#27272a; }
+  @media (prefers-color-scheme: light) { :root { --bg:#fbfbfa; --text:#18181b; --muted:#52525b; --line:#e4e4e7; } }
+  body { margin:0; background:var(--bg); color:var(--text); font:16px/1.65 "Segoe UI Variable","Segoe UI",system-ui,sans-serif; }
+  main { max-width:760px; margin:0 auto; padding:48px 20px 80px; }
+  h1 { font-size:34px; line-height:1.15; letter-spacing:-.02em; margin:0 0 6px; }
+  h2 { font-size:20px; margin:40px 0 8px; }
+  p, li { color:var(--text); }
+  .muted { color:var(--muted); }
+  .summary { border:1px solid var(--line); border-radius:14px; padding:16px 20px; margin:28px 0; }
+  table { width:100%; border-collapse:collapse; font-size:14.5px; }
+  th, td { text-align:left; vertical-align:top; padding:8px 10px; border-bottom:1px solid var(--line); }
+  code { font-family:"Cascadia Mono",Consolas,monospace; font-size:.92em; }
+</style>
+</head>
+<body>
+<main>
+<h1>LEO Privacy Policy</h1>
+<p class="muted">Effective 16 November 2026. LEO is a voice and desktop assistant for Windows, made by Abhinawa.
+Contact: <a href="mailto:leosupport.official@gmail.com">leosupport.official@gmail.com</a></p>
+
+<div class="summary">
+<p><strong>Ringkasan (Bahasa Indonesia).</strong> LEO jalan di laptop kamu. Obrolan, ingatan, project, dan rekaman
+suara disimpan di laptop itu, bukan di server kami. Kami tidak punya server yang menyimpan datamu, tidak menjual
+data, dan tidak memasang pelacak atau iklan. Yang keluar dari laptop hanya yang perlu untuk fitur yang kamu pakai:
+pesanmu ke "otak" AI yang kamu pilih, dan data Google atau Spotify kalau kamu menyambungkannya sendiri. Kamu bisa
+memutus sambungan dan menghapus semuanya kapan saja.</p>
+</div>
+
+<h2>1. What LEO is</h2>
+<p>LEO is an app you install on your own Windows computer. It listens for its wake word, answers by voice and in a
+chat window, and can do tasks on that computer with your approval. The developer does not run a server that receives
+your conversations: LEO talks directly from your computer to the services described below.</p>
+
+<h2>2. What stays on your computer</h2>
+<ul>
+  <li>Conversations, chat history, memory notes, projects, tasks, routines and settings, in LEO's data folder
+      (<code>%APPDATA%\LEO</code>).</li>
+  <li>Speech recognition for the wake word and voice commands runs locally (Vosk and Whisper models on your computer).
+      Short voice clips are kept locally to improve wake-word accuracy and can be turned off in Settings.</li>
+  <li>Logs, which mask passwords, keys and codes before they are written.</li>
+  <li>Sign-in tokens and API keys, in the Windows Credential Manager, never in plain files.</li>
+</ul>
+
+<h2>3. What leaves your computer, and why</h2>
+<table>
+  <tr><th>When</th><th>Sent to</th><th>What</th></tr>
+  <tr><td>Signing in to LEO</td><td>Google</td><td>Google tells LEO your name and email address. LEO keeps only those,
+      to know whose LEO it is.</td></tr>
+  <tr><td>Asking LEO something</td><td>The AI provider you chose: Anthropic (Claude), OpenAI (Codex/ChatGPT),
+      Google (Gemini) or DeepSeek</td><td>Your message, the conversation so far, and what LEO needs to answer it
+      (for example the text of a page or file you asked about). Their own privacy policies apply.</td></tr>
+  <tr><td>Live Talk</td><td>Google (Gemini Live)</td><td>Your voice during the call, and your screen or camera only
+      while you turn them on.</td></tr>
+  <tr><td>Spoken answers</td><td>Microsoft (Edge voices) or OpenAI (if you set an OpenAI key)</td><td>The text of
+      LEO's answer, to turn it into speech. An offline voice (Piper) is used when these are unavailable.</td></tr>
+  <tr><td>Google Calendar and Gmail, only if you connect them</td><td>Google</td><td>See section 4.</td></tr>
+  <tr><td>Spotify, only if you connect it</td><td>Spotify</td><td>Searches and playback commands you ask for.</td></tr>
+  <tr><td>Weather, news and web lookups you ask for</td><td>Open-Meteo, Google News, Wikipedia, DuckDuckGo</td><td>The
+      place or search words.</td></tr>
+  <tr><td>LEO for Android, if you pair a phone</td><td>Your own computer (over your own network or Tailscale)</td>
+      <td>Messages from the phone go to LEO on your computer, then to the AI provider as above. A family member who
+      connects their own Gmail there keeps that permission on your computer, read-only.</td></tr>
+  <tr><td>Update checks</td><td>GitHub</td><td>A request for the latest version file. No personal data.</td></tr>
+</table>
+<p>LEO has no analytics, advertising or tracking. Nothing is sold or shared for marketing.</p>
+
+<h2>4. Google user data (Calendar and Gmail)</h2>
+<p>These are off until you press <em>Connect Google</em> in Settings &gt; Connections and approve them on Google's own
+page. You can approve only some of them.</p>
+<ul>
+  <li><strong>Google Calendar</strong> (<code>calendar.events</code>): LEO reads your events to answer questions like
+      "what's on tomorrow" and adds an event only after you approve it on screen. Guests are invited only when you ask.</li>
+  <li><strong>Gmail</strong> (<code>gmail.readonly</code>): LEO reads and searches your mail to summarise it when you
+      ask. It cannot delete mail or change labels.</li>
+  <li><strong>Gmail drafts</strong> (<code>gmail.compose</code>): LEO writes a reply as a draft after you approve it.
+      LEO never sends email; you read the draft and send it yourself from Gmail.</li>
+</ul>
+<p>Google data is read on your computer, shown to you, and passed only to the AI provider you chose for that
+conversation, to answer your request. It is not stored by the developer, not used to train AI models by the developer,
+and not used for advertising.</p>
+<p><strong>LEO's use and transfer of information received from Google APIs adheres to the
+<a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data Policy</a>,
+including the Limited Use requirements.</strong></p>
+
+<h2>5. Your choices</h2>
+<ul>
+  <li>Disconnect Google or Spotify in Settings &gt; Connections. LEO also asks Google to revoke its access.</li>
+  <li>Delete a conversation from its menu, memory notes in Settings &gt; Memory, and turn off or open voice clips
+      in Settings &gt; Privacy &amp; security. Deleting the folder <code>%APPDATA%\LEO</code> removes everything.</li>
+  <li>Uninstalling LEO removes the app. Your data folder stays until you delete it, so a reinstall keeps your history.</li>
+  <li>You can also remove LEO's access at <a href="https://myaccount.google.com/permissions">myaccount.google.com/permissions</a>.</li>
+</ul>
+
+<h2>6. Security</h2>
+<p>Tokens and keys are kept in the Windows Credential Manager. Actions that delete, send, pay or reach outside your
+computer ask for your approval first. Updates are signed, and LEO refuses updates that are not.</p>
+
+<h2>7. Children</h2>
+<p>LEO is not directed to children under 13 and does not knowingly collect their data.</p>
+
+<h2>8. Changes</h2>
+<p>When this policy changes, the date above changes, and important changes are announced in LEO's update notes.</p>
+
+<h2>9. Contact</h2>
+<p>Questions or requests: <a href="mailto:leosupport.official@gmail.com">leosupport.official@gmail.com</a></p>
+</main>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LEO, a voice assistant for Windows</title>
+<meta name="description" content="LEO is a voice and desktop assistant for Windows. Say Halo Leo, talk in Indonesian, and it answers out loud and does tasks on your laptop with your approval.">
+<style>
+  :root { --bg:#0b0b0c; --text:#f4f4f5; --muted:#a1a1aa; --line:#27272a; --btn-bg:#f4f4f5; --btn-text:#0b0b0c; }
+  @media (prefers-color-scheme: light) {
+    :root { --bg:#fbfbfa; --text:#18181b; --muted:#52525b; --line:#e4e4e7; --btn-bg:#18181b; --btn-text:#fbfbfa; }
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:16px/1.65 "Segoe UI Variable","Segoe UI",system-ui,sans-serif; }
+  main { max-width:760px; margin:0 auto; padding:64px 20px 80px; }
+  h1 { font-size:44px; line-height:1.1; letter-spacing:-.025em; margin:0 0 12px; }
+  h2 { font-size:20px; margin:44px 0 10px; }
+  .lead { font-size:19px; color:var(--muted); margin:0 0 28px; max-width:600px; }
+  .muted { color:var(--muted); }
+  .btn { display:inline-block; background:var(--btn-bg); color:var(--btn-text); text-decoration:none; font-weight:600;
+         padding:12px 20px; border-radius:12px; }
+  .btn:focus-visible, a:focus-visible { outline:2px solid var(--text); outline-offset:3px; }
+  a { color:var(--text); }
+  .note { font-size:14px; color:var(--muted); margin-top:12px; }
+  ul { padding-left:20px; }
+  li { margin:6px 0; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(290px, 1fr)); gap:12px; margin-top:8px; }
+  .card { border:1px solid var(--line); border-radius:14px; padding:14px 16px; }
+  .card strong { display:block; margin-bottom:2px; }
+  .card span { color:var(--muted); font-size:14.5px; }
+  footer { margin-top:56px; padding-top:18px; border-top:1px solid var(--line); font-size:14px; color:var(--muted); }
+  footer a { color:var(--muted); }
+</style>
+</head>
+<body>
+<main>
+<h1>LEO</h1>
+<p class="lead">A voice and desktop assistant for Windows. Say "Halo Leo", talk in Indonesian, and LEO answers out
+loud, opens apps, looks things up and does tasks on your laptop, asking you first before anything important.</p>
+<a class="btn" href="https://github.com/RafieGun/LEO-releases/releases/latest">Download for Windows</a>
+<p class="note">Windows 10 or 11, 64-bit. Free to install. The installer isn't code-signed yet, so Windows may say
+"Windows protected your PC": choose More info, then Run anyway.</p>
+
+<h2>What LEO does</h2>
+<div class="grid">
+  <div class="card"><strong>Talk or type</strong><span>Wake it by voice, use Live Talk for a real-time
+    conversation, or chat in the LEO Desktop window.</span></div>
+  <div class="card"><strong>Works on your laptop</strong><span>Opens apps and sites, controls volume, brightness and
+    media, reads and writes files in your projects.</span></div>
+  <div class="card"><strong>Your choice of AI</strong><span>Gemini (free with a Google AI Studio key), Claude,
+    Codex or DeepSeek, each with your own account.</span></div>
+  <div class="card"><strong>Asks before acting</strong><span>Deleting, sending, paying or reaching outside your
+    laptop needs your yes, on screen or by voice.</span></div>
+</div>
+
+<h2>Optional connections</h2>
+<ul>
+  <li><strong>Google Calendar and Gmail</strong>: ask what's on your schedule, add an event after you approve it,
+      summarise your mail, and write a reply as a draft. LEO never sends email for you.</li>
+  <li><strong>Spotify</strong>: play, pause and skip music by voice.</li>
+</ul>
+<p class="muted">These stay off until you connect them in Settings &gt; Connections, and you can disconnect them at
+any time.</p>
+
+<h2>Privacy</h2>
+<p>LEO runs on your computer. Conversations, memory and settings stay in <code>%APPDATA%\LEO</code>; wake-word and
+speech recognition run locally. There is no LEO server that stores your data, and no ads or tracking. Read the full
+<a href="privacy-policy.html">privacy policy</a>.</p>
+
+<h2>Updates</h2>
+<p>LEO checks for new versions twice a day and installs them while you're not using it. Every update is signed, and
+a version that fails to start is rolled back automatically.</p>
+
+<footer>
+  LEO by Abhinawa · <a href="privacy-policy.html">Privacy policy</a> ·
+  <a href="mailto:leosupport.official@gmail.com">leosupport.official@gmail.com</a>
+</footer>
+</main>
+</body>
+</html>
